@@ -2,7 +2,7 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.26-blue?logo=go)](go.mod)
 
-A simple [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server built in Go. It exposes a `greet` tool that returns a personalised greeting.
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server that generates [Wolfram elementary cellular automata](https://en.wikipedia.org/wiki/Elementary_cellular_automaton). Built in Go using the [`go-automata`](https://github.com/robdwaller/go-automata) library.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ Add it to your MCP client configuration:
 ```json
 {
   "mcpServers": {
-    "greeter": {
+    "automata": {
       "command": "/path/to/automata-mcp"
     }
   }
@@ -28,9 +28,11 @@ Add it to your MCP client configuration:
 
 ## Tools
 
-| Tool    | Description | Input                                    | Output                                     |
-| ------- | ----------- | ---------------------------------------- | ------------------------------------------ |
-| `greet` | Say hi      | `name` (string) – the person to greet    | `greeting` (string) – the greeting message |
+| Tool       | Description                     | Inputs                                                                  | Output                                       |
+|------------|---------------------------------|-------------------------------------------------------------------------|----------------------------------------------|
+| `generate` | Generate cellular automata      | `steps` (int), `rule` (int 0-255), `seed` (string of `0`/`1`)          | `automata` (string) – generations as rows    |
+
+The `generate` tool runs a one-dimensional cellular automaton with periodic (wrap-around) boundaries. The `rule` parameter selects one of Wolfram's 256 rules (e.g., Rule 30, Rule 90, Rule 110). The `seed` is a string of `0` and `1` characters representing the initial row. The output is returned as lines of `0`/`1` characters, one per generation.
 
 ## Development
 
@@ -49,7 +51,7 @@ go build -o automata-mcp .
 npx @modelcontextprotocol/inspector ./automata-mcp
 ```
 
-This opens a web UI at `http://localhost:6274` where you can list tools, call the `greet` tool, and inspect requests and responses.
+This opens a web UI at `http://localhost:6274` where you can list tools, call the `generate` tool, and inspect requests and responses.
 
 ## License
 
